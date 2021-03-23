@@ -1,5 +1,5 @@
 
-##R version 3.6.1  was used to run the following scripts
+##R version 4.0.4  was used to run the following scripts
 
 #####Libraries used
 
@@ -43,6 +43,9 @@ library(gdata)
 library(filesstrings)
 ##cowplot_0.9.3
 library(cowplot)
+#ggbeeswarm_0.6.0
+library("ggbeeswarm")
+
 
 ############################################################################################
 #                        Flow cytometry data analysis                                      #
@@ -77,7 +80,7 @@ coords2strain = function(list) {
 
 ####Transform FCS files in to CSV files
 
-setwd("C:/Users/marsit/Dropbox/Ploidy-MA-CRL/")
+setwd("")
 
 ##### Control 1 diploid
 d = read.FCS("controls/2017-07-14_ploidy controls-v2-1.fcs")
@@ -101,7 +104,7 @@ csv_ctrl2 = read.table("controls/Control2.csv", header = T, sep = ",")
 # Tranform samples files from FCS to CSV files with the good strain number
 ########################################################################
 
-setwd("C:/Users/marsit/Dropbox/Ploidy-MA-CRL/2020-05-12_MA-Ploidy-VL_S1_P35")
+setwd("")
 
 file = dir(pattern="fcs")
 file
@@ -128,14 +131,14 @@ library(gridExtra)
 library(dplyr)
 library(plyr)
 
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL")
+setwd("")
 
 #
 #####################
 # controle haploide #
 #####################
 
-csv_ctrl2 = read.table('/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/controls/Control5.csv', header = T, sep = ',')
+csv_ctrl2 = read.table('Control5.csv', header = T, sep = ',')
 head(csv_ctrl2)
 csv_ctrl2$ech <- as.character(csv_ctrl2$ech)
 ctrl2_bin <- csv_ctrl2 %>% mutate(bin = GRN.B.HLog %/% 400)
@@ -153,7 +156,7 @@ head(test)
 #####################
 # controle diploide #
 #####################
-csv_ctrl1 = read.table('/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/controls/Control8.csv', header = T, sep = ',')
+csv_ctrl1 = read.table('Control8.csv', header = T, sep = ',')
 csv_ctrl1$ech <- as.character(csv_ctrl1$ech)
 ctrl1_bin <- csv_ctrl1 %>% mutate(bin = GRN.B.HLog %/% 400)
 sample = ctrl1_bin[1,1]
@@ -167,7 +170,7 @@ head(test)
 #####################
 # controle 3        #
 #####################
-csv_ctrl3 = read.table('/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2018-06-07_controls/Control3.csv', header = T, sep = ',')
+csv_ctrl3 = read.table('Control3.csv', header = T, sep = ',')
 csv_ctrl3$ech <- as.character(csv_ctrl3$ech)
 ctrl3_bin <- csv_ctrl3 %>% mutate(bin = GRN.B.HLog %/% 400)
 sample = ctrl3_bin[1,1]
@@ -184,7 +187,7 @@ tail (test)
 # Samples      #
 ###############
 
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2018-07-26_Ploidy_wild_ACD/2019-11-22_MA_Ploidy_wild_B3")
+setwd("")
 dossier = strsplit(getwd(), split = "/" )[[1]] %>% tail(n=1)
 
 file_csv = dir(pattern='csv')
@@ -211,10 +214,10 @@ tail(test)
 nrow(test)
 
 
-write.table(test, file="/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_B3_wild.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+write.table(test, file="/tab_ploid_B3_wild.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
 ###################################################
-Tab_P_heatmap = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_B3_wild.txt",header=T,sep="\t")
+Tab_P_heatmap = read.table("tab_ploid_B3_wild.txt",header=T,sep="\t")
 
 head(Tab_P_heatmap)
 Tab_P_heatmap = select (Tab_P_heatmap, -replicate)
@@ -280,8 +283,8 @@ GRN.B.HLog_min_normalised = mutate (Tab_P_heatmap_max, "normalisation"=
                                                                       ifelse (Hyb == "A", ((GRN.B.HLog / 3409.676)*1.122) - 0.117, 
                                                                               ifelse (Hyb == "ctrl", ((GRN.B.HLog / 3766.7123)*1.122) - 0.117, "NA")))))
 
-
-write.table(GRN.B.HLog_min_normalised, file="/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_B3_wild.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+#save all tables for each cross type or wild strain separately
+write.table(GRN.B.HLog_min_normalised, file="/tab_ploid_B3_wild.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
 
 
@@ -295,10 +298,10 @@ library(dplyr)
 library(plyr)
 library(lemon)
 library(grid)
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL")
+setwd("")
 
 #read tables with fluorescence data for each cross and order them for the figure
-data_P_all = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Ploidy_all_4n_kinetics.txt",header=T,sep="\t")
+data_P_all = read.table("Ploidy_all_4n_kinetics.txt",header=T,sep="\t")
 data_P_all $Generations=as.numeric(data_P_all $Generations)
 data_P_all $cross_rep=as.factor(data_P_all $cross_rep)
 data_P_all $Total_4n=as.numeric(data_P_all $Total_4n)
@@ -321,7 +324,7 @@ red_GC= rgb((238/255),0,0)
 green_GC= rgb(0,(139/255),0)
 black_GC= rgb(0,0,0)
 
-pdf(("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Ploidy_all_nbr_22_04_2020.pdf"), height = 10, width =9 )
+pdf(("Ploidy_all_nbr_22_04_2020.pdf"), height = 10, width =9 )
 fig3B <-
   ggplot(data_P_all_1, aes(x = as.numeric(Generations), y = as.numeric(Total_4n), group=cross)) + 
   geom_line (aes(linetype=cross_rep)) +
@@ -410,8 +413,8 @@ library(gridExtra)
 library(dplyr)
 library(plyr)
 
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all")
-Ploid_freq = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Ploidy_frequency_total.txt",header=T,sep="\t")
+setwd("")
+Ploid_freq = read.table("Ploidy_frequency_total.txt",header=T,sep="\t")
 blue= rgb(0,0,(139/255))
 red= rgb((238/255),0,0)
 green= rgb(0,(139/255),0)
@@ -420,7 +423,7 @@ black= rgb(0,0,0)
 color<- c(red, red, red, "deepskyblue3", "deepskyblue3", "deepskyblue3", "maroon4", blue ,blue, green, green, black ,black)
 Ploid_freq1 =filter(Ploid_freq, rep != "VL1")
 
-pdf("/Users/souhirmarsit/Desktop/ploidy_frequency_total_25_08_2020.pdf", width=16, height= 7)
+pdf("ploidy_frequency_total_25_08_2020.pdf", width=16, height= 7)
 ggplot(Ploid_freq, aes(x = (Hyb), y = as.numeric(WGD_freq), fill=Hyb)) +
   geom_bar(stat="identity", position=position_dodge(), colour="black", width=0.75)+ scale_x_discrete(limit = c("VL_S1", "VL_S2", "VL_A", "VL_C1","VL_C2", "VL_C3", "VL_B1","VL_B2", "VL_B3", "L1", "L2", "M1", "M2", "H1", "H2")) +
   scale_fill_manual(values=c("VL_B1" = red, "VL_B2" =red, "VL_B3" =red, "VL_C1" ="deepskyblue3", "VL_C2" ="deepskyblue3", "VL_C3" ="deepskyblue3", "VL_A" = "yellow4", "VL_S1" ="maroon4", "VL_S2" ="maroon4", "L1" =blue ,"L2" =blue, "M1" =green, "M2" =green, "H1" =black , "H2" =black))+
@@ -441,30 +444,30 @@ library(dplyr)
 library(plyr)
 library(lemon)
 
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all")
+setwd("")
 
 #read tables with fluorescence data for each cross
-table_Ploid_0 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_G_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B3")
-table_Ploid_1 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_I_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B1")
-table_Ploid_2 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_H_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B2") 
-table_Ploid_3 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_A_all.txt",header=T,sep="\t") %>% mutate(Hyb="L1") 
-table_Ploid_4 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_D_all.txt",header=T,sep="\t") %>% mutate(Hyb="L2") 
-table_Ploid_5 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_B_all.txt",header=T,sep="\t") %>% mutate(Hyb="M1") 
-table_Ploid_6 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_E_all.txt",header=T,sep="\t") %>% mutate(Hyb="M2") 
-table_Ploid_7 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_C_all.txt",header=T,sep="\t") %>% mutate(Hyb="H1") 
-table_Ploid_8 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_F_all.txt",header=T,sep="\t") %>% mutate(Hyb="H2") 
-table_Ploid_9 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_Hall_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_S2") 
-table_Ploid_10 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_J_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C1")
-table_Ploid_11 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_K_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C2")
-table_Ploid_12 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_L_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C3") 
-table_Ploid_13 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_M_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_S1")
-table_Ploid_14 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_N_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_A") 
+table_Ploid_0 = read.table("tab_ploid_G_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B3")
+table_Ploid_1 = read.table("tab_ploid_I_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B1")
+table_Ploid_2 = read.table("tab_ploid_H_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_B2") 
+table_Ploid_3 = read.table("tab_ploid_A_all.txt",header=T,sep="\t") %>% mutate(Hyb="L1") 
+table_Ploid_4 = read.table("tab_ploid_D_all.txt",header=T,sep="\t") %>% mutate(Hyb="L2") 
+table_Ploid_5 = read.table("tab_ploid_B_all.txt",header=T,sep="\t") %>% mutate(Hyb="M1") 
+table_Ploid_6 = read.table("tab_ploid_E_all.txt",header=T,sep="\t") %>% mutate(Hyb="M2") 
+table_Ploid_7 = read.table("tab_ploid_C_all.txt",header=T,sep="\t") %>% mutate(Hyb="H1") 
+table_Ploid_8 = read.table("tab_ploid_F_all.txt",header=T,sep="\t") %>% mutate(Hyb="H2") 
+table_Ploid_9 = read.table("tab_ploid_Hall_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_S2") 
+table_Ploid_10 = read.table("tab_ploid_J_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C1")
+table_Ploid_11 = read.table("tab_ploid_K_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C2")
+table_Ploid_12 = read.table("tab_ploid_L_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_C3") 
+table_Ploid_13 = read.table("tab_ploid_M_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_S1")
+table_Ploid_14 = read.table("tab_ploid_N_all.txt",header=T,sep="\t") %>% mutate(Hyb="VL_A") 
 
 #Remove empty wells
 table_Ploid_0= filter(table_Ploid_0, ech!= 26)
 table_Ploid_4= filter(table_Ploid_4, ech!= 93)
 
-table_time = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Info_Generations.txt",header=T,sep="\t")
+table_time = read.table("Info_Generations.txt",header=T,sep="\t")
 table_time $Generations=as.factor(table_time $Generations)
 tab_P_all= rbind (table_Ploid_0, table_Ploid_1, table_Ploid_2, table_Ploid_3, table_Ploid_4, table_Ploid_5, table_Ploid_6, table_Ploid_7, table_Ploid_8, table_Ploid_9, table_Ploid_10, table_Ploid_11, table_Ploid_12, table_Ploid_13, table_Ploid_14) 
 tab_P_all= full_join(tab_P_all, table_time, by=c("Generations"))
@@ -473,14 +476,14 @@ tab_P_all1=filter(tab_P_all, normalisation<5)
 tab_P_all2=filter(tab_P_all, normalisation>1)
 tab_P_all= rbind(tab_P_all1, tab_P_all2)
 tab_P_all= tab_P_all[!duplicated(tab_P_all), ]
-write.table(tab_P_all, file="/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Tab_Ploidy_all_alltimepoint_06_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+write.table(tab_P_all, file="Tab_Ploidy_all_alltimepoint_06_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
 #keep only needed geerations 
 tab_P_all=filter(tab_P_all, Generations== 22 | Generations== 352 | Generations==770 | Generations==1012)
 
-write.table(tab_P_all, file="/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Tab_Ploidy_all_3timepoint_06_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+write.table(tab_P_all, file="Tab_Ploidy_all_3timepoint_06_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
-tab_P_all = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Tab_Ploidy_all_3timepoint_06_2020.txt",header=T,sep="\t")
+tab_P_all = read.table("Tab_Ploidy_all_3timepoint_06_2020.txt",header=T,sep="\t")
 tab_P_all = filter(tab_P_all, normalisation>1.4)
 
 #Separate the crosses according to the different panels
@@ -506,7 +509,7 @@ green_GC= rgb(0,(139/255),0)
 black_GC= rgb(0,0,0)
 
 
-pdf(("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Ploidy_3point_all_3n_12_06_2020.pdf"), height = 10, width =20)
+pdf(("Ploidy_3point_all_3n_12_06_2020.pdf"), height = 10, width =20)
 
 fig3B <-
   ggplot(data_P_all_1, aes(x = Time_f, y = as.numeric(normalisation), group=ech)) + 
@@ -587,14 +590,14 @@ library(plyr)
 library(lemon)
 library(grid)
 
-setwd("C:/Users/Proprio/Desktop/MA_Ploidy_all")
+setwd("")
 
 #read tables with ploidy data for each cross
-table_Ploid_1 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_JKL_4n_all.txt",header=T,sep="\t")
-table_Ploid_2 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_BF4n_all2.txt",header=T,sep="\t") 
-table_Ploid_3 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_AD4n_all.txt",header=T,sep="\t")
-table_Ploid_41 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_ABDF_4n.txt",header=T,sep="\t")
-Info_Ploid_4 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Info_ploid_ABDF_4n.txt",header=T,sep="\t")
+table_Ploid_1 = read.table("tab_ploid_JKL_4n_all.txt",header=T,sep="\t")
+table_Ploid_2 = read.table("tab_ploid_BF4n_all2.txt",header=T,sep="\t") 
+table_Ploid_3 = read.table("tab_ploid_AD4n_all.txt",header=T,sep="\t")
+table_Ploid_41 = read.table("tab_ploid_ABDF_4n.txt",header=T,sep="\t")
+Info_Ploid_4 = read.table("Info_ploid_ABDF_4n.txt",header=T,sep="\t")
 
 Info_Ploid_4$ech=as.numeric(Info_Ploid_4$ech)
 table_Ploid_41$ech=as.numeric(table_Ploid_41$ech)
@@ -608,9 +611,9 @@ data_P_all_1 $normalisation=as.numeric(data_P_all_1 $normalisation)
 data_P_all_1= filter(data_P_all_1, Hyb_f != "NA")
 data_P_all_1 $Generations=as.numeric(data_P_all_1 $Generations)
 
-write.table(data_P_all_1, file="/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Tab_Ploidy_all_4n_05_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+write.table(data_P_all_1, file="Tab_Ploidy_all_4n_05_2020.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
-data_P_all_1 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Tab_Ploidy_all_4n_05_2020.txt",header=T,sep="\t")
+data_P_all_1 = read.table("Tab_Ploidy_all_4n_05_2020.txt",header=T,sep="\t")
 
 data_P_all_1 $Hyb_f = factor(data_P_all_1 $Hyb, levels=c("VL_C1", "VL_C2", "VL_C3", "L1", "L2", "M1", "H2"))
 
@@ -621,7 +624,7 @@ green_GC= rgb(0,(139/255),0)
 black_GC= rgb(0,0,0)
 
 
-pdf(("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/Ploidy_4n_all_12_06_20.pdf"), height = 4, width =38 )
+pdf(("Ploidy_4n_all_12_06_20.pdf"), height = 4, width =38 )
 fig3B <- 
   ggplot(data_P_all_1, aes(x = Generations, y = as.numeric(normalisation), group=strain)) + 
   geom_line(alpha=2/10) + 
@@ -650,11 +653,11 @@ dev.off()
 ################################################################################# Figure S4 ####################################################################
 library("ggbeeswarm")
 
-setwd("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL")
+setwd("Ploidy-MA-CRL")
 
 #read tables with fluorescence data for each cross
-table_Ploid_1 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_B2_B3_wild_cor.txt",header=T,sep="\t")
-table_Ploid_2 = read.table("/Users/souhirmarsit/Dropbox/Ploidy-MA-CRL/2019-09-17_MA_Ploidy_all/tab_ploid_A_C_B1_wild_cor.txt",header=T,sep="\t") 
+table_Ploid_1 = read.table("tab_ploid_B2_B3_wild_cor.txt",header=T,sep="\t")
+table_Ploid_2 = read.table("tab_ploid_A_C_B1_wild_cor.txt",header=T,sep="\t") 
 
 Tab_P_heatmap= rbind (table_Ploid_1, table_Ploid_2)
 
@@ -695,8 +698,8 @@ library(ggpubr)
 rm(list=ls())
 
 #read tables with fertility data for each cross
-setwd("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/")
-data = read.table("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/VL_tetraploid_fertility.txt", header = T, sep = '\t')
+setwd("")
+data = read.table("VL_tetraploid_fertility.txt", header = T, sep = '\t')
 data $ploidy_f = factor(data $ploidy, levels=c("2n", "4n"))
 data $cross_f = factor(data $cross, levels=c("VL_C1", "VL_C2", "VL_C3", "L1", "L2", "M1", "H2"))
 data $time_f = factor(data $time, levels=c("Tini", "Tend"))
@@ -711,7 +714,7 @@ data_4= filter(data, fertility != "NA")
 data_4= filter(data_4, type == "tetraploid")
 
 
-pdf(("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/VL_4n_fertility3_27_08_2020.pdf"), height = 5.5, width =13 )
+pdf(("VL_4n_fertility3_27_08_2020.pdf"), height = 5.5, width =13 )
 fig3B <-
   ggplot(data= data_4, aes(y = fertility, x = ploidy_f))+#, group=strain)) + 
   geom_point(fill = "black", alpha=4/10, size=4) +
@@ -738,11 +741,11 @@ grid.draw(g)
 
 dev.off()
 
-############################################################################################ Figure S5 #################################################################
+############################################################################################ Figure S7 #################################################################
 data_2= filter(data, fertility != "NA")
 data_2= filter(data_2, type == "diploid")
 
-pdf(("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/VL_4n_fertility_VL_2n_27_08_2020.pdf"), height = 3, width =8 )
+pdf(("VL_4n_fertility_VL_2n_27_08_2020.pdf"), height = 3, width =8 )
 fig3B <-
   ggplot(data= data_2, aes(y = fertility, x = time_f))+ #, group=strain)) + 
   geom_point(fill = "black", alpha=4/10, size=4) +
@@ -796,8 +799,8 @@ rm(list=ls())
 ############################################################### Calculate the maximum growth rate ###############################################################################
 
 #read tables with OD data for each cross
-setwd("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq")
-data_all = read.table("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/Phenotypage_liq_raw_all_all_4n.txt", header = T, sep = '\t')
+setwd("")
+data_all = read.table("Phenotypage_liq_raw_all_all_4n.txt", header = T, sep = '\t')
 
 data_all = filter (data_all, strain != "NA")
 
@@ -849,7 +852,7 @@ df_slopes2 = data_all %>% group_by(plate, sample, strain, cross, hyb, ploidy) %>
                    max_size = nth(OD, -3,order_by=OD),
                    ndiv = nth(OD, -3,order_by=OD)-min(OD, na.rm=T))
 
-write.table(df_sum, file="C:/Users/Proprio/Desktop/Phenotypage/Phenotypage_time_slope_2n.txt", sep = '\t')
+write.table(df_sum, file="Phenotypage_time_slope_2n.txt", sep = '\t')
 
 data_all_slope = full_join(data_all, df_slopes2, by=c("plate", "sample", "strain", "cross", "hyb", "ploidy") )
 
@@ -892,18 +895,18 @@ df_sum <- data_all_slope1 %>% group_by(strain, cross, ploidy, hyb) %>%
                    median_max_size = median(max_size),
                    sd_slope= sd(max_slope),
                    sd_size= sd(max_size))
-write.table(df_sum, file="C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", sep = '\t')
+write.table(df_sum, file="phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", sep = '\t')
 
 
-########################################################################################## Figure S6 #####################################################################
+########################################################################################## Figure S8 #####################################################################
 
 
-setwd("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq")
-data1 = read.table("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", header = T, sep = '\t')
-info1 = read.table("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/Info_phenotypage_all_4n.txt", header = T, sep = '\t')
+setwd("")
+data1 = read.table("phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", header = T, sep = '\t')
+info1 = read.table("Info_phenotypage_all_4n.txt", header = T, sep = '\t')
 
-data2 = read.table("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/phenotyp_liq_growth_slope_max_time_all_2n_2.txt", header = T, sep = '\t')
-info2 = read.table("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/Info_phenotypage_all_2n.txt", header = T, sep = '\t')
+data2 = read.table("phenotyp_liq_growth_slope_max_time_all_2n_2.txt", header = T, sep = '\t')
+info2 = read.table("Info_phenotypage_all_2n.txt", header = T, sep = '\t')
 
 data_all1 = full_join(data1, info1, by=c("strain"))%>% mutate("group"="tetraploid")
 
@@ -921,7 +924,7 @@ red= rgb((238/255),0,0)
 green= rgb(0,(139/255),0)
 black= rgb(0,0,0)
 
-pdf(("C:/Users/Proprio/Desktop/Phenotypage/phenotypage_liq/Phenotyp_liq_slope_max_all_all_2.pdf"), height = 4, width =20 )
+pdf(("Phenotyp_liq_slope_max_all_all_2.pdf"), height = 4, width =20 )
 fig3B <-
   ggplot(data, aes(x = time_f, y = as.numeric(median_max_slope), ymin=median_max_slope-sd_slope, ymax=median_max_slope+sd_slope, group=cross)) + 
   geom_line(aes(linetype= factor(group), alpha=2/10)) + 
@@ -960,11 +963,11 @@ library(formattable)
 rm(list=ls())
 
 
-setwd("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/")
+setwd("")
 
-data1 = read.table("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", header = T, sep = '\t')
-info1 = read.table("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/Info_phenotypage_all_4n_2.txt", header = T, sep = '\t')
-data2 = read.table("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/phenotyp_liq_growth_slope_max_time_all_2n_3.txt", header = T, sep = '\t')
+data1 = read.table("phenotyp_liq_growth_slope_max_time_all_4n_cor.txt", header = T, sep = '\t')
+info1 = read.table("Info_phenotypage_all_4n_2.txt", header = T, sep = '\t')
+data2 = read.table("phenotyp_liq_growth_slope_max_time_all_2n_3.txt", header = T, sep = '\t')
 
 data_all1 = full_join(data1, info1, by=c("strain"))%>% mutate("group"="tetraploid")
 data_all1 =mutate(data_all1, "group1"="4n")
@@ -975,7 +978,7 @@ data = rbind(data2, data_all1)
 data =mutate(data, "max_slope_h"=median_max_slope*3600)
 data =mutate(data, "sd_slope_h"=sd_slope*3600)
 
-#Separate the data in groups before WGD and by WGD and post-WGD
+#Separate the data in groups before WGD and by WGD 
 data_2n_4n=filter(data, group1 !="2n")
 data_2n_4n=filter(data_2n_4n, time1=="T2n" |time1=="T4n")
 data_2n_4n $time_f = factor(data_2n_4n $time1, levels=c("T2n", "T4n"))
@@ -984,6 +987,9 @@ data_2n_4n $hyb_f = factor(data_2n_4n $hyb, levels=c("VL_C1", "VL_C2", "VL_C3", 
 data_2n_4n = filter(data_2n_4n , time_f !="NA" )
 data_2n_4n = filter(data_2n_4n , hyb_f !="NA" )
 
+#Separate the data post-WGD
+
+data_4n_tend=filter(data, time1=="Tend" |time1=="T4n")
 data_4n_tend=filter(data_4n_tend, group1 !="2n")
 
 data_4n_tend=mutate(data_4n_tend, "slope_g"=(max_slope_h/Generations))
@@ -998,9 +1004,9 @@ data $hyb_f = factor(data $hyb, levels=c("VL_C1", "VL_C2", "VL_C3", "L1", "L2", 
 data=filter(data, time_f!="NA")
 data=filter(data, hyb_f!="NA")
 
-data_T2n= filter(data, time_f=="T2n")
-data_T4n= filter(data, time_f=="T4n" | time_f=="Tmid")
-data_Tend= filter(data, time_f=="Tend")
+data_T2n= filter(data, time=="T2n")
+data_T4n= filter(data, time=="T4n" | time=="Tmid")
+data_Tend= filter(data, time=="Tend")
 data_Tini= filter(data, time=="Tini")
 
 # Calculate the difference of max slope before and by WGD (T4n-T2n) and after WGD and at the end of the experiment  (Tend-T4n)
@@ -1027,10 +1033,12 @@ diff_4n_tend_2n=filter(diff_4n_tend, group1 =="2n")
 diff_tini_tend_4n= filter(diff_tini_tend, group1 =="4n")
 diff_tini_tend_2n= filter(diff_tini_tend, group1 =="2n")
 
+write.table (diff_4n_tend_4n, "tab_Fig_2D.txt", row.names = F, quote = F, sep= "\t")
 
-########################################################################################### Figure S7 A ########################################################################
 
-pdf(("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/Growth_rate_diff_2n_4n_27_08_2020.pdf"), height = 5, width =13 )
+########################################################################################### Figure S9 A ########################################################################
+
+pdf(("Growth_rate_diff_2n_4n_27_08_2020.pdf"), height = 5, width =13 )
 fig3B <-
   ggplot(data_2n_4n, aes(x = time_f, y = as.numeric(max_slope_h))) +#, group=hyb_f)) + 
    geom_line(aes(group = (cross)), alpha = 0.25, fill =("grey")) + 
@@ -1059,7 +1067,7 @@ grid.draw(g)
 dev.off()
 
 
-########################################################################################### Figure S7 B ########################################################################
+########################################################################################### Figure S9 B ########################################################################
 
 pdf("diff_4n_tend_h_4n_generations.pdf", width=14, height= 3.2)
 
@@ -1094,7 +1102,7 @@ t_tests2 = diff_2n_4n %>%
 
 t_tests2 <- t_tests2 %>%  mutate_if(is.numeric, round, digits = 2)
 
-pdf("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/diff_2n_4n_h_normalised_27_08_2020.pdf", width=7.5, height= 5)
+pdf("diff_2n_4n_h_normalised_27_08_2020.pdf", width=7.5, height= 5)
 ggplot(diff_2n_4n, aes(x = hyb_f.x, y = as.numeric(diff), fill= hyb_f.x)) +
   scale_fill_manual(values=c("deepskyblue3", "deepskyblue3", "deepskyblue3", blue, blue, green, black))+
   geom_point( shape=21, colour = "white", size=4, alpha= 0.75) +
@@ -1113,21 +1121,24 @@ dev.off()
 
 
 ########################################################################################### Figure 2 D ########################################################################
+diff_4n_tend_4n $hyb_f = factor(diff_4n_tend_4n $hyb, levels=c("VL_C1", "VL_C2", "VL_C3", "L1", "L2", "M1", "H2"))
 
-diff_4n_tend_4n1= filter (diff_4n_tend_4n, hyb != "L2" & hyb != "VL_C2") 
+diff_4n_tend_4n= filter (diff_4n_tend_4n, hyb != "L2" & hyb != "VL_C2") 
 
 # Test whether each group differs from 0
-t_tests = diff_4n_tend_4n1 %>% group_by(hyb_f.x) %>% dplyr::summarise(P = t.test(diff_Gener, mu = 0)$p.value, Sig = ifelse(P < 0.05, "*", "ns"), max_diff = max(diff_Gener))
+t_tests = diff_4n_tend_4n %>% group_by(hyb) %>% dplyr::summarise(P = t.test(diff_Gener, mu = 0)$p.value, Sig = ifelse(P < 0.05, "*", "ns"), max_diff = max(diff_Gener))
 
 t_tests <- t_tests %>%  mutate_if(is.numeric, round, digits = 3)
+
+
 
 blue= rgb(0,0,(139/255))
 red= rgb((238/255),0,0)
 green= rgb(0,(139/255),0)
 black= rgb(0,0,0)
 
-pdf("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/diff_4n_tend_h_normalised_27_08_2020.pdf", width=7.5, height= 5)
-ggplot(diff_4n_tend_4n, aes(x = hyb_f.x, y = as.numeric(diff_Gener), fill= hyb_f.x)) +
+pdf("diff_4n_tend_h_normalised_27_08_2020.pdf", width=7.5, height= 5)
+ggplot(diff_4n_tend_4n, aes(x = hyb_f, y = as.numeric(diff_Gener), fill= hyb_f)) +
   scale_fill_manual(values=c("deepskyblue3", "deepskyblue3", "deepskyblue3", blue, blue, green, black))+
   geom_point( shape=21, colour = "white", size=4, alpha= 0.75) +
   stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median, geom = "crossbar", width = 0.62)+
@@ -1158,11 +1169,11 @@ library(dplyr)
 library(reshape2)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
-Table_info="/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Table_info_J.txt" 
+setwd("/MA_Sequences")
+Table_info="Table_info_J.txt" 
 Table_info <- read.table(Table_info, header = T, sep = "\t", fill = TRUE)
 
-ref_cov_file="/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_cov_J_strains.txt"  
+ref_cov_file="SpB_cov_J_strains.txt"  
 
 ref_cov_wide <- read.table(ref_cov_file, header = T, sep = "\t", fill = TRUE)
 ref_cov_long <- melt(ref_cov_wide, id.vars = c("contig", "pos"))
@@ -1200,11 +1211,11 @@ tab_essai = full_join(depth_cov_10kb_conversion, summary_data, by = "variable")
 tab_essai = full_join(tab_essai, Table_info, by = "variable")
 
 
-write.table (tab_essai, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_depth_cov_10kb_J_all.txt", row.names = F, quote = F, sep= "\t")
-write.table (tab_essai_meanChr, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_J_all.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_essai, "/SpB_depth_cov_10kb_J_all.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_essai_meanChr, "/SpB_meanChr_J_all.txt", row.names = F, quote = F, sep= "\t")
 
 
-###################################################################### Figure S10 # and # Figure S11 #########################################################################################
+###################################################################### Figure S5 # and # Figure S12 #########################################################################################
 
 library(ggplot2)
 library(dplyr)
@@ -1217,7 +1228,7 @@ library(lemon)
 library(grid)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n")
+setwd("")
 
 #read table with coverages
 d1 = read.table("SpB_depth_cov_10kb_Parents_all.txt", header=T) 
@@ -1243,7 +1254,7 @@ dall=select(dall, -Chr_ord)
 dall=filter(dall, variable != "Jean.Talon")
 dall=filter(dall, Chr != "NA")
 
-write.table(dall, file="/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Cov_all_Parents_10kb.txt", quote = FALSE, sep = "\t", row.names = FALSE )
+write.table(dall, file="/Cov_all_Parents_10kb.txt", quote = FALSE, sep = "\t", row.names = FALSE )
 
 dall$strain_ord <- factor(dall$variable, levels = c("MSH.604", "UWOPS.91.202", "LL2012_028", "LL2012_021", "LL2011_004", "LL2011_009", "MSH.587.1",  "LL2011_012", "LL2011_001", "YPS644", "YPS744", "LL2013_040", "LL2013_054"))
 
@@ -1257,13 +1268,13 @@ dall = full_join(dall, I, by=c("variable"))
 dall$strain_ord <- factor(dall$parent, levels = c("SpB1", "SpB2", "SpB3", "SpB4", "SpC1", "SpC2", "SpC3",  "SpC4", "SpC5", "SpA1", "SpA2", "S.cer1", "S.cer2"))
 
 
-############################################################################################################## Figure S10 ###############################################################
+############################################################################################################## Figure S12 ###############################################################
 blue= rgb(0,0,(139/255))
 red= rgb((238/255),0,0)
 green= rgb(0,(139/255),0)
 black= rgb(0,0,0)
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/","Cov_Parents_all_lineblue_10kb.pdf"), height = 13, width = 10)
+pdf(file = paste0("Cov_Parents_all_lineblue_10kb.pdf"), height = 13, width = 10)
 
 PlotA<-
   ggplot(dall, aes(x = bin, y = cov)) + geom_line() + geom_hline(data = dall, aes(yintercept = median_cov_tot), col = "blue3", size=1)+ 
@@ -1286,7 +1297,7 @@ for (i in stripr) {
 grid.draw(g)
 dev.off()
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/","Cov_Parents_all_10kb.pdf"), height = 13, width = 10)
+pdf(file = paste0("Cov_Parents_all_10kb.pdf"), height = 13, width = 10)
 
 PlotA<-
   ggplot(dall, aes(x = bin, y = cov)) + geom_bar(stat="identity", position="identity", colour="grey30") + geom_hline(data = dall, aes(yintercept = median_cov_tot), col = "red", size=1)+ 
@@ -1309,9 +1320,9 @@ for (i in stripr) {
 grid.draw(g)
 dev.off()
 
-############################################################################################################## Figure S11 ###############################################################
+############################################################################################################## Figure S5 ###############################################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/","Cov_4n_tend_all_10kb_bar_cor.pdf"), height = 80, width = 40)
+pdf(file = paste0("Cov_4n_tend_all_10kb_bar_cor.pdf"), height = 80, width = 40)
 
 PlotA<-
   dall_Plot_tini <- ggplot(dall_Tend, aes(x = bin, y = cov)) + geom_bar(stat="identity", position="identity", colour="grey30") + geom_hline(data = dall_Tend, aes(yintercept = median_cov_tot), col = "red", size=2)+ 
@@ -1337,7 +1348,7 @@ for (i in stripr) {
 grid.draw(g)
 dev.off()
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/","Cov_4n_tend_all_10kb_bar.pdf"), height = 80, width = 40)
+pdf(file = paste0("Cov_4n_tend_all_10kb_bar.pdf"), height = 80, width = 40)
 
 PlotA<-
   dall_Plot_tini <- ggplot(dall_Tend, aes(x = bin, y = cov)) + geom_bar() + geom_hline(data = dall_Tend, aes(yintercept = median_cov_tot), col = "red", size=2)+ 
@@ -1395,31 +1406,31 @@ library(reshape2)
 rm(list=ls())
 
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n")
-tab_essai_meanChr1 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_F_4n.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr2 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_B_4n.txt", header = T, sep = "\t", fill = TRUE)
-tab_nomB <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/nom_strain_B.txt", header = T, sep = "\t", fill = TRUE)
+setwd("")
+tab_essai_meanChr1 <- read.table("SpB_meanChr_F_4n.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr2 <- read.table("SpB_meanChr_B_4n.txt", header = T, sep = "\t", fill = TRUE)
+tab_nomB <- read.table("nom_strain_B.txt", header = T, sep = "\t", fill = TRUE)
 tab_essai_meanChr2 = full_join(tab_essai_meanChr2, tab_nomB, by=c("variable"))
 tab_essai_meanChr2 = filter(tab_essai_meanChr2, contig !="NA")
 tab_essai_meanChr2 = filter(tab_essai_meanChr2, Hyb !="NA")
-tab_essai_meanChr3 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_J_4n.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr4 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_K_4n.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr5 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/SpB_meanChr_L_4n.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr6 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_F.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr7 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_B.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr3 <- read.table("SpB_meanChr_J_4n.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr4 <- read.table("SpB_meanChr_K_4n.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr5 <- read.table("SpB_meanChr_L_4n.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr6 <- read.table("meanChr_F.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr7 <- read.table("meanChr_B.txt", header = T, sep = "\t", fill = TRUE)
 tab_essai_meanChr7 = filter(tab_essai_meanChr7, Hyb !="M1_40_Tend")
-tab_essai_meanChr8 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_A.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr9 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_D.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr10 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_C.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr11 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_E.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr12 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_H.txt", header = T, sep = "\t", fill = TRUE)
-tab_essai_meanChr13 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/meanChr_I.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr8 <- read.table("meanChr_A.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr9 <- read.table("meanChr_D.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr10 <- read.table("meanChr_C.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr11 <- read.table("meanChr_E.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr12 <- read.table("meanChr_H.txt", header = T, sep = "\t", fill = TRUE)
+tab_essai_meanChr13 <- read.table("meanChr_I.txt", header = T, sep = "\t", fill = TRUE)
 
 tab_essai_meanChr = rbind(tab_essai_meanChr1, tab_essai_meanChr2, tab_essai_meanChr3, tab_essai_meanChr4, tab_essai_meanChr5, tab_essai_meanChr6, 
                           tab_essai_meanChr7, tab_essai_meanChr8, tab_essai_meanChr9, tab_essai_meanChr10, tab_essai_meanChr11, tab_essai_meanChr12, tab_essai_meanChr13)
 
 
-Chr_corr <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/chromosome_corr_freq.txt", header = T, sep = "\t", fill = TRUE)
+Chr_corr <- read.table("chromosome_corr_freq.txt", header = T, sep = "\t", fill = TRUE)
 tab_essai_meanChr = full_join(tab_essai_meanChr, Chr_corr, by=c("contig"))
 
 #Calculate the copy number
@@ -1452,7 +1463,7 @@ tab_cov_chr_som1_loss_4n = mutate (tab_cov_chr_som0_4n, "Aneuploidy"=
 
 aneup_gainloss = rbind(tab_cov_chr_som1_gain_4n, tab_cov_chr_som1_loss_4n)
 
-write.table (aneup_gainloss, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_F_4n.txt", row.names = F, quote = F, sep= "\t")
+write.table (aneup_gainloss, "Aneup_gain_loss_F_4n.txt", row.names = F, quote = F, sep= "\t")
 
 ################# Calculte the difference in copy number between Tend and Tini by Chromosome for diploids 2n
 
@@ -1475,7 +1486,7 @@ tab_cov_chr_som1_loss_2n = mutate (tab_cov_chr_som0_2n, "Aneuploidy"=
                                      ifelse (CNV_diff < -0.5, -1, 0))
 
 aneup_gainloss = rbind(tab_cov_chr_som1_gain_2n, tab_cov_chr_som1_loss_2n)
-write.table (aneup_gainloss, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_J.txt", row.names = F, quote = F, sep= "\t")
+write.table (aneup_gainloss, "Aneup_gain_loss_J.txt", row.names = F, quote = F, sep= "\t")
 
 ################# Calculte the difference in copy number between Tend and Tini by Chromosome for triploids 3n
 
@@ -1500,7 +1511,7 @@ tab_cov_chr_som1_loss_3n = mutate (tab_cov_chr_som0_3n, "Aneuploidy"=
                                      ifelse (CNV_diff < -0.6, -1, 0))
 
 aneup_gainloss = rbind(tab_cov_chr_som1_gain_3n, tab_cov_chr_som1_loss_3n)
-write.table (aneup_gainloss, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_3n_A.txt", row.names = F, quote = F, sep= "\t")
+write.table (aneup_gainloss, "Aneup_gain_loss_3n_A.txt", row.names = F, quote = F, sep= "\t")
 
 
 ######################################################################## Generate table of Aneuploidy frequency #############################################################
@@ -1511,31 +1522,31 @@ library(reshape2)
 library(grid)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n")
-tab_essai_meanChr1 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_A.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "L")
-tab_essai_meanChr2 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_3n_A.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "3n")%>% mutate (Hybb = "L")
-tab_essai_meanChr3 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_A_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "L")
-tab_essai_meanChr4 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_D.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "L")
-tab_essai_meanChr5 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_3n_D.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "3n")%>% mutate (Hybb = "L")
-tab_essai_meanChr6 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_D_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "L")
-tab_essai_meanChr7 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_B.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "M")
-tab_essai_meanChr8 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_B_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "M")
-tab_essai_meanChr9 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_E.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "M")
-tab_essai_meanChr10 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_C.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "H")
-tab_essai_meanChr11 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_F.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "H")
-tab_essai_meanChr12 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_F_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "H")
-tab_essai_meanChr13 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_H.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_B2")%>% mutate (Hybb = "VL_B")
-tab_essai_meanChr14 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_I.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_B1")%>% mutate (Hybb = "VL_B")
-tab_essai_meanChr15 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_J.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C1")%>% mutate (Hybb = "VL_C")
-tab_essai_meanChr16 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_K_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C2")%>% mutate (Hybb = "VL_C")
-tab_essai_meanChr17 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_L_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C3")%>% mutate (Hybb = "VL_C")
-tab_essai_meanChr18 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_J.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C1")%>% mutate (Hybb = "VL_C")
-tab_essai_meanChr19 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_K.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C2")%>% mutate (Hybb = "VL_C")
-tab_essai_meanChr20 <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneup_gain_loss_L.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C3")%>% mutate (Hybb = "VL_C")
+setwd("")
+tab_essai_meanChr1 <- read.table("Aneup_gain_loss_A.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "L")
+tab_essai_meanChr2 <- read.table("Aneup_gain_loss_3n_A.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "3n")%>% mutate (Hybb = "L")
+tab_essai_meanChr3 <- read.table("Aneup_gain_loss_A_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "L")
+tab_essai_meanChr4 <- read.table("Aneup_gain_loss_D.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "L")
+tab_essai_meanChr5 <- read.table("Aneup_gain_loss_3n_D.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "3n")%>% mutate (Hybb = "L")
+tab_essai_meanChr6 <- read.table("Aneup_gain_loss_D_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "L")
+tab_essai_meanChr7 <- read.table("Aneup_gain_loss_B.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "M")
+tab_essai_meanChr8 <- read.table("Aneup_gain_loss_B_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "M")
+tab_essai_meanChr9 <- read.table("Aneup_gain_loss_E.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n")%>% mutate (Hybb = "M")
+tab_essai_meanChr10 <- read.table("Aneup_gain_loss_C.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "H")
+tab_essai_meanChr11 <- read.table("Aneup_gain_loss_F.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (Hybb = "H")
+tab_essai_meanChr12 <- read.table("Aneup_gain_loss_F_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n")%>% mutate (Hybb = "H")
+tab_essai_meanChr13 <- read.table("Aneup_gain_loss_H.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_B2")%>% mutate (Hybb = "VL_B")
+tab_essai_meanChr14 <- read.table("Aneup_gain_loss_I.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_B1")%>% mutate (Hybb = "VL_B")
+tab_essai_meanChr15 <- read.table("Aneup_gain_loss_J_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C1")%>% mutate (Hybb = "VL_C")
+tab_essai_meanChr16 <- read.table("Aneup_gain_loss_K_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C2")%>% mutate (Hybb = "VL_C")
+tab_essai_meanChr17 <- read.table("Aneup_gain_loss_L_4n.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "4n") %>% mutate (cross = "VL_C3")%>% mutate (Hybb = "VL_C")
+tab_essai_meanChr18 <- read.table("Aneup_gain_loss_J.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C1")%>% mutate (Hybb = "VL_C")
+tab_essai_meanChr19 <- read.table("Aneup_gain_loss_K.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C2")%>% mutate (Hybb = "VL_C")
+tab_essai_meanChr20 <- read.table("Aneup_gain_loss_L.txt", header = T, sep = "\t", fill = TRUE) %>% mutate (ploidy = "2n") %>% mutate (cross = "VL_C3")%>% mutate (Hybb = "VL_C")
 
 
-strain_tot_nmbr <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/strain_tot_nmbr.txt", header = T, sep = "\t", fill = TRUE)
-chromID <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Chromosome_id.txt", header = T, sep = "\t", fill = TRUE)
+strain_tot_nmbr <- read.table("/strain_tot_nmbr.txt", header = T, sep = "\t", fill = TRUE)
+chromID <- read.table("/Chromosome_id.txt", header = T, sep = "\t", fill = TRUE)
 
 
 tab_tot_aneup = rbind(tab_essai_meanChr1, tab_essai_meanChr2, tab_essai_meanChr3, tab_essai_meanChr4, tab_essai_meanChr5, tab_essai_meanChr6, 
@@ -1545,7 +1556,7 @@ tab_tot_aneup = rbind(tab_essai_meanChr1, tab_essai_meanChr2, tab_essai_meanChr3
 tab_tot_aneup1 = full_join(tab_tot_aneup, strain_tot_nmbr, by=c("cross", "ploidy"))
 tab_tot_aneup = full_join(tab_tot_aneup1, chromID, by=c("Chr_t.x"))
 tab_tot_aneup$total=as.numeric(tab_tot_aneup$total)
-write.table (tab_tot_aneup, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneuploidy_gainloss-by_chr_strain_all.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_tot_aneup, "/Aneuploidy_gainloss-by_chr_strain_all.txt", row.names = F, quote = F, sep= "\t")
 
 tab_tot_aneup_gain = filter(tab_tot_aneup, Aneuploidy > 0| Aneuploidy == 0)%>% mutate (gainloss = "gain")
 tab_tot_aneup_loss = filter(tab_tot_aneup, Aneuploidy < 0| Aneuploidy == 0)%>% mutate (gainloss = "loss")
@@ -1553,13 +1564,13 @@ tab_tot_aneup_gainloss = rbind (tab_tot_aneup_gain, tab_tot_aneup_loss)
 tab_tot_aneup_gainloss1=unique(tab_tot_aneup_gainloss)
 tab_tot_aneup_gainloss12 = filter (tab_tot_aneup_gainloss1, strain_t!= "D52" & strain_t!= "A74"& strain_t!= "D67")
 
-write.table (tab_tot_aneup_gainloss12, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneuploidy-by_chr_all_gainloss_25_08_2020.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_tot_aneup_gainloss12, "/Aneuploidy-by_chr_all_gainloss_25_01_2021.txt", row.names = F, quote = F, sep= "\t")
 
 aneup_somme_gainloss1 = tab_tot_aneup_gainloss12  %>% group_by(strain_t, cross, ploidy, Hybb.x, Hybb.y, gainloss) %>% dplyr::summarise(Aneup_tot = sum(Aneuploidy)) %>% as.data.frame()
-write.table (tab_tot_aneup, "/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneuploidy-by_strain_all_gainloss.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_tot_aneup, "/Aneuploidy-by_strain_all_gainloss.txt", row.names = F, quote = F, sep= "\t")
 
 
-############################################################################################## Figure 3 A, Figure S8, Figure S9 ###########################
+############################################################################################## Figure 3 A, Figure S10###########################
 
 library(dplyr)
 library(reshape2)
@@ -1574,9 +1585,9 @@ library(ggpubr)
 rm(list=ls())
 
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
+setwd("")
 
-Aneup = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneuploidy-by_strain_all_gainloss_Chr12.txt", header = T, sep = "\t", fill = TRUE)
+Aneup = read.table("Aneuploidy-by_strain_all_gainloss.txt", header = T, sep = "\t", fill = TRUE)
 
 
 Aneup$cross_f <- factor(Aneup$cross, levels = c("VL_C1", "VL_C2", "VL_C3", "VL_B1", "VL_B2", "L1", "L2","M1", "M2", "H1", "H2"))
@@ -1606,7 +1617,7 @@ black= rgb(0,0,0,)
 Aneup.summary <- Aneup %>% group_by(cross_f, Hyb, Hybb_f, ploidy) %>% dplyr::summarise(mean=median( Aneup_tot), sd = sd(Aneup_tot, na.rm = TRUE)) 
 
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/","Aneuploidy_rate_boxplot_corr_2n_25_08_2020_pvalue.pdf"), height = 6, width = 9)
+pdf(file = paste0("Aneuploidy_rate_boxplot_corr_2n_25_08_2020_pvalue.pdf"), height = 6, width = 9)
 
 my_comparisons <- list(c("VL_B", "VL_C"), c("VL_B", "L"), c("VL_B", "M"), c("VL_B", "H"),c("VL_C", "L"), c("VL_C", "M"), c("VL_C", "H"), c("L", "M"), c("L", "H"), c("M", "H"))
 ggplot(Aneup_abs_sum[!is.na(Aneup_abs_sum$cross_f),], aes(x = Hybb_f, y = as.numeric(Aneup_tot_tot), fill=cross_f)) +
@@ -1637,9 +1648,53 @@ ggplot(Aneup_loss[!is.na(Aneup_loss$cross_f),], aes(x = Hybb_f, y = as.numeric(A
 
 dev.off()
 
-############################################################################################## Figure S9 ##################################################
+############################################################################################## Figure S11 ##################################################
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+library(plyr)
+library(lattice)
+library(gridExtra)
+library(grid)
+library(cowplot)
+library(lemon)
+library(ggpubr)
+rm(list=ls())
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/","Aneuploidy_rate_boxplot_corr_2n_25_08_2020_Chr12.pdf"), height = 6, width = 9)
+
+setwd("")
+
+Aneup = read.table("Aneuploidy-by_strain_all_gainloss_Chr12.txt", header = T, sep = "\t", fill = TRUE)
+
+
+Aneup$cross_f <- factor(Aneup$cross, levels = c("VL_C1", "VL_C2", "VL_C3", "VL_B1", "VL_B2", "L1", "L2","M1", "M2", "H1", "H2"))
+Aneup$Hybb_f <- factor(Aneup$Hybb, levels = c("VL_C", "VL_B", "L","M", "H"))
+
+Aneup= filter(Aneup, ploidy == "2n")
+Aneup= filter(Aneup, Aneup_tot < 11)
+Aneup= filter(Aneup, Aneup_tot > -11)
+Aneup= filter(Aneup, Aneup_tot > -11)
+
+Aneup_abs <- Aneup 
+Aneup_abs$Aneup_tot <- abs(Aneup_abs$Aneup_tot)     
+
+Aneup_abs_sum = Aneup_abs  %>% group_by(strain_t, cross, ploidy, Hyb, Hybb, cross_f, Hybb_f) %>% dplyr::summarise(Aneup_tot_tot = sum(Aneup_tot)) %>% as.data.frame()
+
+Aneup_gain= filter(Aneup, gainloss == "gain")
+Aneup_loss= filter(Aneup, gainloss == "loss")
+
+Aneup_loss$Aneup_tot <- abs(Aneup_loss$Aneup_tot) 
+
+
+blue= rgb(0,0,(139/255))
+red= rgb((238/255),0,0)
+green= rgb(0,(139/255),0)
+black= rgb(0,0,0,)
+
+Aneup.summary <- Aneup %>% group_by(cross_f, Hyb, Hybb_f, ploidy) %>% dplyr::summarise(mean=median( Aneup_tot), sd = sd(Aneup_tot, na.rm = TRUE)) 
+
+
+pdf(file = paste0("Aneuploidy_rate_boxplot_corr_2n_25_08_2020_Chr12.pdf"), height = 6, width = 9)
 my_comparisons <- list(c("VL_B", "VL_C"), c("VL_B", "L"), c("VL_B", "M"), c("VL_B", "H"),c("VL_C", "L"), c("VL_C", "M"), c("VL_C", "H"), c("L", "M"), c("L", "H"), c("M", "H"))
 ggplot(Aneup_abs_sum[!is.na(Aneup_abs_sum$cross_f),], aes(x = Hybb_f, y = as.numeric(Aneup_tot_tot), fill=cross_f)) +
   geom_boxplot(alpha = 0.4)+
@@ -1670,18 +1725,46 @@ ggplot(Aneup_loss[!is.na(Aneup_loss$cross_f),], aes(x = Hybb_f, y = as.numeric(A
 dev.off()
 
 
-############################################################################################### Figure 4 A, Figure S12 ####################################
+############################################################################################### Figure 4 A, Figure S13 ####################################
+rm(list=ls())
+
+setwd("")
+
+Aneup = read.table("Aneuploidy-by_strain_all_gainloss.txt", header = T, sep = "\t", fill = TRUE)
+
+Aneup= filter(Aneup, cross != "VL_B1"& cross != "VL_B2"& cross != "M2"& cross != "H1")
+
+Aneup$cross_f <- factor(Aneup$cross, levels = c("VL_C1", "VL_C2", "VL_C3", "VL_B1", "VL_B2", "L1", "L2","M1", "M2", "H1", "H2"))
+Aneup$Hybb_f <- factor(Aneup$Hybb, levels = c("VL_C", "VL_B", "L","M", "H"))
+
+Aneup= filter(Aneup, ploidy == "2n"| ploidy == "4n")
+Aneup= filter(Aneup, Aneup_tot < 11)
+Aneup= filter(Aneup, Aneup_tot > -11)
+Aneup= filter(Aneup, Aneup_tot > -11)
+
+Aneup_abs <- Aneup 
+Aneup_abs$Aneup_tot <- abs(Aneup_abs$Aneup_tot)     
+
+Aneup_abs_sum = Aneup_abs  %>% group_by(strain_t, cross, ploidy, Hyb, Hybb, cross_f, Hybb_f) %>% dplyr::summarise(Aneup_tot_tot = sum(Aneup_tot)) %>% as.data.frame()
+
+Aneup_gain= filter(Aneup, gainloss == "gain")
+Aneup_loss= filter(Aneup, gainloss == "loss")
+
+Aneup_loss$Aneup_tot <- abs(Aneup_loss$Aneup_tot) 
+
+write.table (Aneup_abs_sum, "/tab_Fig_4A.txt", row.names = F, quote = F, sep= "\t")
+write.table (Aneup_gain, "/tab_Fig_S13A.txt", row.names = F, quote = F, sep= "\t")
+write.table (Aneup_loss, "/tab_Fig_S13B.txt", row.names = F, quote = F, sep= "\t")
 
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","Aneuploidy_rate_boxplot_corr_4n_chr12_pvalue.pdf"), height = 6, width = 9)
+blue= rgb(0,0,(139/255))
+red= rgb((238/255),0,0)
+green= rgb(0,(139/255),0)
+black= rgb(0,0,0,)
+
+pdf(file = paste0("Aneuploidy_rate_boxplot_corr_4n_chr12_pvalue.pdf"), height = 6, width = 9)
 
 my_comparisons <- list( c("2n", "4n"))
-ggplot(Aneup_abs_sum[!is.na(Aneup_abs_sum$cross_f),], aes(x = ploidy, y = as.numeric(Aneup_tot_tot), fill=ploidy)) +
-  geom_boxplot(alpha = 0.4)+
-  geom_point( shape = 21,size=2, position = position_jitterdodge(), color="black",alpha=0.25)+
-  scale_fill_manual(values=c("deepskyblue3", "deepskyblue3", "deepskyblue3",  blue, blue, green, black))+
-  ylab("Aneuploidy / line")+ xlab("Cross")+ theme(axis.title.y = element_text(size=18), axis.title.x = element_text(size=18), axis.text.y= element_text(size=16), axis.text.x= element_text(size=18))+
-  stat_compare_means(comparisons = my_comparisons, method = "wilcox.test",  label = "p.format", size= 4) 
 
 ggplot(Aneup_abs_sum[!is.na(Aneup_abs_sum$cross_f),], aes(x = ploidy, y = as.numeric(Aneup_tot_tot), fill=cross_f)) +
   geom_boxplot(alpha = 0.4)+
@@ -1745,7 +1828,7 @@ library(RColorBrewer)
 library(wesanderson)
 rm(list=ls())
 
-tab_tot_aneup <- read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/Aneuploidy_freq/Aneuploidy-by_chr_all_gainloss_25_08_2020.txt", header = T, sep = "\t", fill = TRUE)
+tab_tot_aneup <- read.table("Aneuploidy-by_chr_all_gainloss_25_01_2021.txt", header = T, sep = "\t", fill = TRUE)
 
 ###### Calculate the frequency of chromosome gain or loss by cross by chromosome and by ploidy
 tab_tot_aneup_2n = filter(tab_tot_aneup, ploidy=="2n")
@@ -1791,7 +1874,7 @@ black= rgb(0,0,0)
 
 ######################################################################################## Figure 3 B ###################################################################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/","Aneuploidy_freq_heatmap_legend_2n_25_08_2020.pdf"), height = 8, width = 20)
+pdf(file = paste0("Aneuploidy_freq_heatmap_legend_2n_25_08_2020.pdf"), height = 8, width = 20)
 
 g_2n_g <- ggplot(tab_freq_aneup_2n_gain, aes(x = Chr , y = Hyb_f)) +
   geom_raster(aes (fill=freq_aneup_chr)) +  scale_x_discrete(expand = c(0, 0))+ scale_y_discrete(expand = c(0, 0))+
@@ -1812,7 +1895,11 @@ dev.off()
 
 ######################################################################################### Figure 4 B ##################################################################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_scripts_phenotyping_Ploidy_paper/All_figures/","Aneuploidy_freq_heatmap_4n_25_08_2020.pdf"), height = 8, width = 20)
+write.table (tab_freq_aneup_4n_gain, "/tab_Fig_4Bgain.txt", row.names = F, quote = F, sep= "\t")
+write.table (tab_freq_aneup_4n_loss, "/tab_Fig_4Bloss.txt", row.names = F, quote = F, sep= "\t")
+
+
+pdf(file = paste0("Aneuploidy_freq_heatmap_4n_25_08_2020.pdf"), height = 8, width = 20)
 g_4n_g <- ggplot(tab_freq_aneup_4n_gain, aes(x = Chr , y = Hyb_f)) +
   geom_raster(aes (fill=freq_aneup_chr)) +  scale_x_discrete(expand = c(0, 0))+ scale_y_discrete(expand = c(0, 0))+
   scale_fill_gradient2(low = "white", high = "midnightblue", mid = "white", limits=c(0, 1)) + 
@@ -1822,7 +1909,7 @@ g_4n_g <- ggplot(tab_freq_aneup_4n_gain, aes(x = Chr , y = Hyb_f)) +
 
 g_4n_l <- ggplot(tab_freq_aneup_4n_loss, aes(x = Chr , y = Hyb_f)) +
   geom_raster(aes (fill=freq_aneup_chr)) +  scale_x_discrete(expand = c(0, 0))+ scale_y_discrete(expand = c(0, 0))+
-   scale_fill_gradient2(low = "white", high = "darkred") + 
+   scale_fill_gradient2(low = "white", high = "darkred", limits=c(0, 1)) + 
   theme(axis.text.x = element_text(size = 25)) + theme(axis.text.y = element_text(size = 25)) +
   ylab("") +xlab("")+
   coord_equal()
@@ -1839,7 +1926,7 @@ library(ggplot2)
 library(plyr)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/")
+setwd("")
 
 #Read VCF merged table for each cross (here exemle for L cross)
 d = read.table("var_L_snp.vcf_sep.txt", header=T, sep='\t') %>% mutate_all(as.character)
@@ -1901,7 +1988,7 @@ head(AD_2)
 MONSUPERTABLEAU = rbind(AD_0, AD_1, AD_2)
 tail(MONSUPERTABLEAU)
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/")
+setwd("")
 
 #Identification of contigs -> chromosome
 ref_conversion <- read.table("SpC_tig_rearrangement.txt", header = F, col.names = c("Chr", "CHROM", "Orientation"))
@@ -1932,7 +2019,7 @@ head(tFA_f)
 tail(tFA_f)
 summary(tFA_f)
 
-write.table (tFA_f, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_L_all_AF_C_05_2020.txt", row.names = F, quote = F, sep= "\t")
+write.table (tFA_f, "/tab_L_all_AF_C_05_2020.txt", row.names = F, quote = F, sep= "\t")
 
 
 #################################################################################### LOH_density ### Figure S3 ##############################################
@@ -1948,7 +2035,7 @@ library(lemon)
 library(grid)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis")
+setwd("")
 
 I1 = read.table("Table_info_A_4n_AF.txt", header=T) 
 I2 = read.table("Table_info_D_4n_AF.txt", header=T) 
@@ -1968,8 +2055,8 @@ d6 = read.table("tab_F_4n_AF_C_04_2020.txt", header=T)
 d7 = read.table("tab_J_4n_AF.txt", header=T) 
 d8 = read.table("tab_K_4n_AF.txt", header=T) 
 d9 = read.table("tab_L_4n_AF.txt", header=T) 
-d10 = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/tab_B_4n_AF.txt", header=T) 
-d11 = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/Hyb_4n/tab_F_4n_AF.txt", header=T) 
+d10 = read.table("tab_B_4n_AF.txt", header=T) 
+d11 = read.table("tab_F_4n_AF.txt", header=T) 
 d10= filter(d10, strain == "B32_P16"|strain == "B32_P35"| strain == "B59_P35")
 d11= filter(d11, strain == "F47_P35")
 # Remove strains that are repeated or not tetraploid
@@ -2003,8 +2090,8 @@ dtot1 = filter (dtot, time == "Tini"| time == "Tmid" | time == "Tend")
 dtot1 = filter (dtot1, cross != "parent")
 dtot2 = filter (dtot, cross == "parent")
 
-write.table (dtot, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_parents_4n_AF.txt", row.names = F, quote = F, sep= "\t")
-dtot1 = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_parents_4n_AF.txt", header=T) 
+write.table (dtot, "/tab_parents_4n_AF.txt", row.names = F, quote = F, sep= "\t")
+dtot1 = read.table("/tab_parents_4n_AF.txt", header=T) 
 
 #remove 3n strains
 dtot1 = filter (dtot1, strain_t.y != "VLC1_40" & strain_t.y != "M1_55")
@@ -2038,7 +2125,7 @@ black= rgb(0,0,0)
 
 ################################################################################# Figure S3 #####################################################################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","4n_all_density2_16_07_2020.pdf"), height = 20, width = 9)
+pdf(file = paste0("4n_all_density2_16_07_2020.pdf"), height = 20, width = 9)
 
 PlotA<- ggplot(dtot1, aes(x = FA)) + geom_density()+ 
   facet_grid(strain_tt.y~ Ploidy, scales = "free") + 
@@ -2063,7 +2150,7 @@ grid.draw(g)
 dev.off()
 
 
-################################################################################### LOH_ heatmap ###### Fig S13 ###############################################################################
+################################################################################### LOH_ heatmap ###### Fig S6 ###############################################################################
 
 ###########Analysis of VCF merged files of tetraploid strains 
 
@@ -2076,11 +2163,11 @@ library(gridExtra)
 library(cowplot)
 library(lemon)
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
+setwd("")
 
 
-tFA_f = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_All_4n_AF.txt", header = T, sep = "\t", fill = TRUE)
-tFA_f_P = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_F_P35_AF_C_04_2020.txt", header = T, sep = "\t", fill = TRUE)
+tFA_f = read.table("tab_All_4n_AF.txt", header = T, sep = "\t", fill = TRUE)
+tFA_f_P = read.table("tab_F_P35_AF_C_04_2020.txt", header = T, sep = "\t", fill = TRUE)
 
 tFA_f1 = filter (tFA_f, cross == "H2") 
 
@@ -2094,13 +2181,13 @@ tFA_f_3n = filter (tFA_f, Ploidy == 3)
 
 ######################################################
 # Data of chromosome length
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
+setwd("")
 
-chr_length = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/LOH_analysis/LOH_nov_2019/chr_length_F.txt", header = T, sep = "\t", fill = TRUE)
+chr_length = read.table("chr_length_F.txt", header = T, sep = "\t", fill = TRUE)
 chr_length= mutate(chr_length, "FA_cor"=1)
 
 ######################################################
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis")
+setwd("All_genomes_LOH_analysis")
 Info_strain <- read.table("Table_info_F_4n_AF.txt", header = T, sep = "\t", fill = TRUE)
 head (Info_strain)
 
@@ -2180,7 +2267,7 @@ g_tend <-
 
 dev.off()
 
-####################################################################################################### identify the LOH_blocks #######################################
+#######################################################################################################identify the LOH_blocks#######################################
 
 ###########Analyse VCF merge toutes les souches
 library(dplyr)
@@ -2193,9 +2280,9 @@ library(cowplot)
 library(lemon)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
+setwd("")
 
-tFA_f = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/tab_A_AF_C_04_2020.txt", header = T, sep = "\t", fill = TRUE)
+tFA_f = read.table("tab_A_AF_C_04_2020.txt", header = T, sep = "\t", fill = TRUE)
 
 head(tFA_f)
 
@@ -2208,18 +2295,17 @@ tFA_f_3n = filter (tFA_f, Ploidy == 3)
 
 ######################################################
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
-chr_length = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/LOH_analysis/LOH_nov_2019/chr_length_A.txt", header = T, sep = "\t", fill = TRUE)
+setwd("")
+chr_length = read.table("chr_length_A.txt", header = T, sep = "\t", fill = TRUE)
 
 chr_length= mutate(chr_length, "FA_cor"=1)
 
 ######################################################
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis")
+setwd("")
 Info_strain <- read.table("Table_info_A_LOH.txt", header = T, sep = "\t", fill = TRUE)
 head (Info_strain)
 
-#######################################################################################################################################################################
-###################################################### Identify LOH for diploids and tetraploids 2n , 4n ###############################################################
+######################################################2n
 tFA_f_2n= rbind (tFA_f_P, tFA_f_2n)
 tail(tFA_f_2n)
 LOH_2n = select(tFA_f_2n, strain, CHROM, POS, FA_cor, allele) 
@@ -2266,9 +2352,22 @@ LOH_f_Tend_2n_filter1 <- LOH_f_Tend_2n_filter %>% add_count(CHROM, Chr, POS, sor
 LOH_f_Tend_2n_filter2 = filter(LOH_f_Tend_2n_filter1, nnn < 8)
 LOH_f_Tend_2n_filter3 = filter(LOH_f_Tend_2n_filter2, strain != "F81_P35" & strain != "F38_P35" & strain != "F47_P35")
 
+Aneup_by_chr = read.table("Aneup_by_chr_H_2n.txt", header = T, sep = "\t", fill = TRUE)
+
+LOH_f_Tend_2n_filter3 = full_join(LOH_f_Tend_2n_filter3, Aneup_by_chr, by=c("strain_t", "cross", "Chr"))
+LOH_f_Tend_2n_filter4 = filter(LOH_f_Tend_2n_filter3,  Aneuploidy != 1)
+LOH_f_Tend_2n_filter5=unique(LOH_f_Tend_2n_filter4)
+
+LOH_f_Tend_2n_filter5 <- LOH_f_Tend_2n_filter5 %>% add_count(CHROM, Chr, strain, bin, sort=TRUE)
+LOH_f_Tend_2n_filter6 = filter(LOH_f_Tend_2n_filter5, nnnn > 5)
+
 ##############################################For aneuploid chromosomes
 
-Aneup_by_chr = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/Aneup_by_chr_H_2n.txt", header = T, sep = "\t", fill = TRUE)
+LOH_f_Tend_2n_filter1_aneup <- LOH_f_Tend_2n %>% add_count(CHROM, Chr, POS, sort=TRUE)
+LOH_f_Tend_2n_filter2_aneup = filter(LOH_f_Tend_2n_filter1_aneup, nnn < 8)
+LOH_f_Tend_2n_filter3_aneup = filter(LOH_f_Tend_2n_filter2_aneup, strain != "F81_P35" & strain != "F38_P35" & strain != "F47_P35")
+
+Aneup_by_chr = read.table("Aneup_by_chr_H_2n.txt", header = T, sep = "\t", fill = TRUE)
 
 LOH_f_Tend_2n_filter3_aneup = full_join(LOH_f_Tend_2n_filter3_aneup, Aneup_by_chr, by=c("strain_t", "cross", "Chr"))
 
@@ -2303,140 +2402,14 @@ LOH_freq1= filter(LOH_freq, FA_cor > 0)
 LOH_f_P1 = select(LOH_f_P, strain, Chr, POS, bin, FA_cor)
 LOH_freq_P = rbind (LOH_f_P1, LOH_freq1)
 
-#to check if it works well
-ggplot(LOH_freq_P, aes(x= interaction(POS, Chr) , y = strain))+
-  geom_raster(aes(fill=FA_cor)) + 
-  scale_fill_gradient2(low = "darkred", high = "midnightblue", mid = "white", midpoint = 0.5, limits=c(0, 1.08)) +
-  facet_grid(~Chr, scales ="free_x", space="free_x")+
-  theme_bw()+
-  theme(axis.text.y=element_text(size=18), axis.title.y=element_text(size=18)) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(strip.text = element_text(colour = 'black', face="bold", size = 18))+ labs(x=NULL) + theme(axis.ticks=element_blank()) + theme(axis.text.x=element_blank())# +
-
 
 ######################################################################################
-write.table (LOH_freq, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_H_filter_aneup.txt", row.names = F, quote = F, sep= "\t")
+write.table (LOH_freq, "/LOH_H_filter_aneup.txt", row.names = F, quote = F, sep= "\t")
 ###################################################################################
-
-#######################################################################################################################################################################
-###################################################### Identify LOH for triploids 3n ##################################################################################
-
-tFA_f_3n= rbind (tFA_f_P, tFA_f_3n)
-head(tFA_f_P)
-head(tFA_f_3n)
-LOH_3n = select(tFA_f_3n, strain, CHROM, POS, FA_cor, allele) 
-LOH_3n$POS = as.numeric(LOH_3n$POS)
-POS_100pb_3n <- LOH_3n %>% group_by(CHROM, strain) %>% mutate(bin = (POS %/% 300))%>% as.data.frame() 
-POS_100pb2_3n <- POS_100pb_3n %>% add_count(CHROM, strain, bin, sort=TRUE)
-POS_100pb3_3n = mutate(POS_100pb2_3n, "filtre"=
-                         ifelse (FA_cor > 0.56  & FA_cor < 0.76 , "fail", "ok")) 
-POS_100pb4_3n = filter(POS_100pb3_3n, n>3)
-POS_100pb_LOH_3n = filter (POS_100pb4_3n, filtre == "ok")
-POS_100pb_LOH2_3n=full_join(chr_length, POS_100pb_LOH_3n, by=c("CHROM", "POS", "strain", "FA_cor"))
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
-ref_conversion <- read.table("SpB_tig_rearrangement.txt", header = F, col.names = c("Chr", "CHROM", "Orientation"))
-head (ref_conversion)
-POS_100pb_LOH2_3n <- left_join(POS_100pb_LOH2_3n, ref_conversion, by = "CHROM")
-head (POS_100pb_LOH2_3n)
-POS_100pb_LOH2_3n$Chr = as.numeric(POS_100pb_LOH2_3n$Chr)
-
-
-head(POS_100pb_LOH1_3n)
-head(chr_length)
-POS_100pb_LOH2_3n=full_join(chr_length, POS_100pb_LOH_3n, by=c("CHROM", "POS", "strain", "FA_cor"))
-
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
-ref_conversion <- read.table("SpB_tig_rearrangement.txt", header = F, col.names = c("Chr", "CHROM", "Orientation"))
-head (ref_conversion)
-POS_100pb_LOH2_3n <- left_join(POS_100pb_LOH2_3n, ref_conversion, by = "CHROM")
-head (POS_100pb_LOH2_3n)
-POS_100pb_LOH2_3n$Chr = as.numeric(POS_100pb_LOH2_3n$Chr)
-
-LOH_f_3n <- left_join(POS_100pb_LOH2_3n, Info_strain, by = "strain")
-LOH_f_P = filter (LOH_f_3n, strain=="LL2011_004") 
-LOH_f_Tini_3n = filter(LOH_f_3n, time == "Tini")
-LOH_f_Tini_3n <- filter(LOH_f_Tini_3n, Ploidy != 2)
-LOH_f_Tini_3n = rbind (LOH_f_P, LOH_f_Tini_3n) 
-LOH_f_Tini_3n$POS = as.numeric(LOH_f_Tini_3n$POS)
-LOH_f_Tend_3n = filter(LOH_f_3n, time == "Tend")
-LOH_f_Tend_3n <- filter(LOH_f_Tend_3n, Ploidy != 2)
-LOH_f_Tend_3n = rbind (LOH_f_P, LOH_f_Tend_3n) 
-LOH_f_Tend_3n$POS = as.numeric(LOH_f_Tend_3n$POS)
-
-head(LOH_f_Tend_3n)
-tail(LOH_f_Tend_3n)
-LOH_f_Tend_3n_1 <- filter(LOH_f_Tend_3n,  FA_cor > 0.8)
-LOH_f_Tend_3n_0 <- filter(LOH_f_Tend_3n,  FA_cor < 0.45)
-LOH_f_Tend_3n_filter = rbind (LOH_f_Tend_3n_1, LOH_f_Tend_3n_0)
-LOH_f_Tend_3n_filter = select(LOH_f_Tend_3n_filter, -n)
-LOH_f_Tend_3n_filter1 <- LOH_f_Tend_3n_filter %>% add_count(CHROM, Chr, POS, sort=TRUE)
-
-#enlever les LOH présents dans plus que 8 souches
-LOH_f_Tend_3n_filter2 = filter(LOH_f_Tend_3n_filter1, n < 8)
-LOH_f_Tend_3n_filter3 = filter(LOH_f_Tend_3n_filter2, strain != "F81_P35" & strain != "F38_P35" & strain != "F47_P35")
-
-
-##############################################  For aneuploid chromosomes
-LOH_f_Tend_3n=select(LOH_f_Tend_3n, -n)
-
-LOH_f_Tend_3n_filter1_aneup <- LOH_f_Tend_3n %>% add_count(CHROM, Chr, POS, sort=TRUE)
-LOH_f_Tend_3n_filter2_aneup = filter(LOH_f_Tend_3n_filter1_aneup, n < 8)
-LOH_f_Tend_3n_filter3_aneup = filter(LOH_f_Tend_3n_filter2_aneup, strain != "F81_P35" & strain != "F38_P35" & strain != "F47_P35")
-
-Aneup_by_chr = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/Aneup_by_chr_L1_3n.txt", header = T, sep = "\t", fill = TRUE)
-
-LOH_f_Tend_3n_filter3_aneup = full_join(LOH_f_Tend_3n_filter3_aneup, Aneup_by_chr, by=c("strain_t", "cross", "Chr"))
-
-LOH_f_Tend_3n_filter4_aneup = filter(LOH_f_Tend_3n_filter3_aneup,  Aneuploidy == 1)
-LOH_f_Tend_3n_filter4_aneup1 <- LOH_f_Tend_3n_filter4_aneup %>% group_by(CHROM, Chr, strain) %>% dplyr::summarise(median_FA = median(FA_cor))%>% as.data.frame() 
-LOH_f_Tend_3n_filter5_aneup = full_join(LOH_f_Tend_3n_filter4_aneup, LOH_f_Tend_3n_filter4_aneup1, by=c("strain", "CHROM", "Chr"))
-
-LOH_f_Tend_3n_filter5_aneup1 = mutate(LOH_f_Tend_3n_filter5_aneup, "filtre_aneup"=
-                                        ifelse ((FA_cor < (median_FA-0.15)), "ok", 
-                                                ifelse ((FA_cor > (median_FA+0.15)), "ok", "fail"))) 
-
-LOH_f_Tend_3n_filter5_aneup2 = filter (LOH_f_Tend_3n_filter5_aneup1, filtre_aneup == "ok")
-LOH_f_Tend_3n_filter5_aneup3=unique(LOH_f_Tend_3n_filter5_aneup2)
-LOH_f_Tend_3n_filter5_aneup3=select(LOH_f_Tend_3n_filter5_aneup3, -n)
-LOH_f_Tend_3n_filter5_aneup3 <- LOH_f_Tend_3n_filter5_aneup3 %>% add_count(CHROM, Chr, strain, bin, sort=TRUE)
-LOH_f_Tend_3n_filter6_aneup = filter(LOH_f_Tend_3n_filter5_aneup3, n > 5)
-
-#############################################################################join 2 tables
-
-LOH_freq_1= select(LOH_f_Tend_3n_filter6, strain, Chr, POS, bin, FA_cor)
-LOH_freq_aneup= select(LOH_f_Tend_3n_filter6_aneup, strain, Chr, POS, bin, FA_cor)
-
-LOH_freq = rbind(LOH_freq_1, LOH_freq_aneup)
-
-LOH_freq= filter (LOH_freq, strain!="NA")
-LOH_freq= filter (LOH_freq, Chr!="NA")
-LOH_freq= filter (LOH_freq, POS!="NA")
-LOH_freq= filter (LOH_freq, bin!="NA")
-LOH_freq= filter (LOH_freq, FA_cor!="NA")
-
-LOH_f_P1 = select(LOH_f_P, strain, Chr, POS, bin, FA_cor)
-LOH_freq_P = rbind (LOH_f_P1, LOH_freq)
-
-#to check if it works well
-ggplot(LOH_freq_P, aes(x= interaction(POS, Chr) , y = strain))+
-  geom_raster(aes(fill=FA_cor)) + 
-  scale_fill_gradient2(low = "darkred", high = "midnightblue", mid = "white", midpoint = 0.5, limits=c(0, 1.08)) +
-  facet_grid(~Chr, scales ="free_x", space="free_x")+
-  theme_bw()+
-  theme(axis.text.y=element_text(size=18), axis.title.y=element_text(size=18)) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  theme(strip.text = element_text(colour = 'black', face="bold", size = 18))+ labs(x=NULL) + theme(axis.ticks=element_blank()) + theme(axis.text.x=element_blank())# +
-
-
-######################################################################################
-write.table (LOH_freq, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_D_3n_filter_aneup.txt", row.names = F, quote = F, sep= "\t")
-###################################################################################
-
-
-
-###############################
-#     Create blocks of LOH    #
+#Create blocks of LOH  
 ###############################
 
-LOH_freq = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_H_filter_aneup.txt", header = T, sep = "\t", fill = TRUE)
+LOH_freq = read.table("/LOH_H_filter_aneup.txt", header = T, sep = "\t", fill = TRUE)
 
 LOH_freq$bin=as.numeric(LOH_freq$bin)
 LOH_freq$Chr=as.factor(LOH_freq$Chr)
@@ -2506,9 +2479,9 @@ LOH_block = full_join(LOH_block_start, LOH_block_end, by=c("strain", "Chr", "blo
 LOH_block = mutate(LOH_block, size=(end-start))
 LOH_block_200pb = filter (LOH_block, size > 200)
 LOH_block_500pb = filter (LOH_block, size > 500)
-write.table (LOH_block_200pb, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_block_200pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
-write.table (LOH_block_500pb, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_block_500pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
-write.table (LOH_block_1000pb, "/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_block_1000pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
+write.table (LOH_block_200pb, "/LOH_block_200pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
+write.table (LOH_block_500pb, "/LOH_block_500pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
+write.table (LOH_block_1000pb, "/LOH_block_1000pb_H_aneuploidy_cor.txt", row.names = F, quote = F, sep= "\t")
 
 
 
@@ -2527,9 +2500,9 @@ library(lemon)
 library(ggpubr)
 rm(list=ls())
 
-setwd("/Users/souhirmarsit/Desktop/MA_Sequences")
+setwd("")
 
-LOH = read.table("/Users/souhirmarsit/Desktop/MA_Sequences/All_genomes_LOH_analysis/LOH_segments_tot_08_2020.txt", header = T, sep = "\t", fill = TRUE)
+LOH = read.table("LOH_segments_tot_08_2020.txt", header = T, sep = "\t", fill = TRUE)
 
 LOH1=LOH
 
@@ -2553,7 +2526,7 @@ pv <- LOH2 %>% group_by(Position, cross) %>% summarize(p.value = kruskal.test(n 
 ##################################################################################################### Figure 3 C #############################################
 
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","LOH_rate_boxplot_2n_Psignif_25_08_2020_cor.pdf"), height = 10, width = 10)
+pdf(file = paste0("LOH_rate_boxplot_2n_Psignif_25_08_2020_cor.pdf"), height = 10, width = 10)
 
 my_comparisons <- list(c("VL_B", "L"), c("VL_B", "M"), c("VL_B", "H"), c("L", "M"), c("L", "H"))
 ggplot(LOH1[!is.na(LOH1$cross_f),], aes(x = Hyb_f, y = as.numeric(n), fill=cross_f)) +
@@ -2570,7 +2543,7 @@ dev.off()
 
 #################################################################################################### Figure 3 D #############################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","LOH_size_boxplot_2n_Psignif_08_2020.pdf"), height = 10, width = 10)
+pdf(file = paste0("LOH_size_boxplot_2n_Psignif_08_2020.pdf"), height = 10, width = 10)
 
 my_comparisons <- list(c("VL_B", "L"), c("VL_B", "M"), c("VL_B", "H"), c("L", "M"), c("L", "H"), c("M", "H"))
 
@@ -2593,7 +2566,7 @@ LOH2 <- LOH1 %>% add_count(strain, position, ploidy, sort=TRUE)
 
 ####################################################################################################### Figure 4 C ############################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","LOH_rate_boxplot_all_ploidy_point_4n2_08_2020_cor.pdf"), height = 7, width = 7)
+pdf(file = paste0("LOH_rate_boxplot_all_ploidy_point_4n2_08_2020_cor.pdf"), height = 7, width = 7)
 
 my_comparisons <- list( c("2n", "4n"))
 ggplot(LOH1[!is.na(LOH1$cross_f),], aes(x = ploidy, y = as.numeric(n), fill=ploidy)) +
@@ -2617,7 +2590,7 @@ dev.off()
 
 ####################################################################################################### Figure 4 D ############################################
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","LOH_size_boxplot_ploidy_4n2.pdf"), height = 7, width = 7)
+pdf(file = paste0("LOH_size_boxplot_ploidy_4n2.pdf"), height = 7, width = 7)
 
 my_comparisons <- list( c("2n", "4n"))
 ggplot(LOH1[!is.na(LOH1$cross_f),], aes(x = ploidy, y = as.numeric(logsize), fill=ploidy)) +
@@ -2643,7 +2616,7 @@ dev.off()
 ####################################################################################################### Figure S14 ############################################
 
 
-pdf(file = paste0("/Users/souhirmarsit/Desktop/Data_Ploidy_2020_submit/Data_scripts_phenotyping_Ploidy_paper/All_figures/","LOH_size_boxplot_ploidy_3n2_08_2020_cor.pdf"), height = 7, width = 7)
+pdf(file = paste0("LOH_size_boxplot_ploidy_3n2_08_2020_cor.pdf"), height = 7, width = 7)
 
 ggplot(LOH1[!is.na(LOH1$ploidy),], aes(x = cross_f, y = as.numeric(n), fill=ploidy)) +
   geom_boxplot(alpha = 0.4)+
